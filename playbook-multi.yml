@@ -20,7 +20,7 @@
   - block:
     - name: Get the original ISO
       get_url:
-        url: {{ webserver_url }}/{{ ocp_version }}/{{ ocp_version }}.3/{{ iso_name }}
+        url: {{ webserver_url }}:{{ webserver_port | default(80) }}/{{ webserver_subpath }}/{{ webserver_subpath }}/{{ ocp_version }}/{{ ocp_version }}.3/{{ iso_name }}
         dest: /tmp
         checksum: sha256:{{ iso_checksum }}
 
@@ -81,11 +81,11 @@
 
   - name: Add image_url
     set_fact:
-      cmd_args: "{{ cmd_args }} coreos.inst.image_url={{ webserver_url }}:{{ webserver_port | default(80) }}/{{ rhcos_bios }}"
+      cmd_args: "{{ cmd_args }} coreos.inst.image_url={{ webserver_url }}:{{ webserver_port | default(80) }}/{{ webserver_subpath }}/{{ rhcos_bios }}"
 
   - name: Add ignition_url
     set_fact:
-      cmd_args: "{{ cmd_args }} coreos.inst.ignition_url={{ webserver_url }}:{{ webserver_port | default(80) }}/{{ group_names[0] }}.ign"
+      cmd_args: "{{ cmd_args }} coreos.inst.ignition_url={{ webserver_url }}:{{ webserver_port | default(80) }}/{{ webserver_subpath }}/{{ group_names[0] }}.ign"
 
   - name: Replace the isolinux.cfg file
     template:
